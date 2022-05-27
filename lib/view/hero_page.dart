@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-
 import 'package:flutter/material.dart' hide Hero;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:rick_morty/model/heroes.dart';
 import 'package:rick_morty/service/web_service.dart';
 import 'package:rick_morty/utils/debugging_util.dart';
@@ -20,6 +20,49 @@ class HeroPage extends StatefulWidget {
 
 class _HeroPageState extends State<HeroPage> {
   final filterTEC = TextEditingController();
+  static const _pageSize = 10;
+
+  final PagingController<int, Hero> _pagingController =
+      PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    _pagingController.addStatusListener((status) {
+      if ((status == PagingStatus.ongoing ||
+          status == PagingStatus.completed)) {
+        setState(() {});
+      }
+    });
+
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+
+    super.initState();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItem = await WebService().getHeroes();
+      final isLastPage = newItem.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItem);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newItem, nextPageKey);
+      }
+    } catch (error) {
+      dPrint(error, 'Hero list: ');
+      _pagingController.error = error;
+    }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,13 +93,11 @@ class _HeroPageState extends State<HeroPage> {
                 dPrint(snapshot.error.toString(), 'Heroes');
                 return ListView.separated(
                     itemBuilder: (_, index) {
-
                       final item = snapshot.requireData[index];
                       return GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const HeroDetailsPage(
-                              )));
+                              builder: (_) => HeroItem(hero: item)));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(16),
@@ -65,13 +106,11 @@ class _HeroPageState extends State<HeroPage> {
                             children: [
                               Row(
                                 children: [
-                                  item!.image != null
-                                      ? Expanded(
-                                          child: Image.network(
-                                            '${item!.image}',
-                                            width: 64,
-                                            height: 64,
-                                          ),
+                                  item.image != null
+                                      ? Image.network(
+                                          '${item.image}',
+                                          width: 64,
+                                          height: 64,
                                         )
                                       : SvgPicture.asset(
                                           Assets.avatar_m,
@@ -81,9 +120,9 @@ class _HeroPageState extends State<HeroPage> {
                                   const SizedBox(width: 12),
                                   Column(
                                     children: [
-                                      Text('${item?.name}'),
+                                      Text('${item.name}'),
                                       const SizedBox(height: 4),
-                                      Text('${item?.name}'),
+                                      Text('${item.name}'),
                                     ],
                                   )
                                 ],
@@ -95,11 +134,13 @@ class _HeroPageState extends State<HeroPage> {
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(height: 8),
-                    itemCount: snapshot.data?.length ?? 0 );
+                    itemCount: snapshot.data?.length ?? 0);
               }
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
+              return snapshot.hasError != true
+                  ? const Center(child: CircularProgressIndicator.adaptive())
+                  : const Center(
+                      child: Text('Something went wrong'),
+                    );
             }));
   }
 }

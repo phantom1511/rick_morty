@@ -37,6 +37,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.0.0
   flutter_svg: ^0.22.0
+  infinite_scroll_pagination: ^3.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

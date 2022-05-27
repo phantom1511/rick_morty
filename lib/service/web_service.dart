@@ -4,6 +4,8 @@ import 'package:get_it/get_it.dart';
 import 'package:rick_morty/model/heroes.dart';
 import 'package:rick_morty/utils/debugging_util.dart';
 
+import '../model/episode.dart';
+
 class WebService {
   static final WebService _singleton = WebService._internal();
 
@@ -31,15 +33,17 @@ class WebService {
       return Future.error(e);
     }
   }
-// Future<void> getCatImage() async {
-//   try {
-//     final response = await _dio.get('https://cataas.com/cat');
-//     dPrint(response);
-//     return response.data;
-//   } on DioError catch (e) {
-//     dPrint(e);
-//     return Future.error(e);
-//   }
-// }
 
+  Future<List<Episode>> getEpisode() async {
+    try {
+      final response =
+          await _dio.get('https://rickandmortyapi.com/api/episode');
+      dPrint(response, 'getEpisode: ');
+
+      return episodeFromJson(response.data['results']);
+    } on DioError catch (e) {
+      dPrint(e.message, 'getEpisodeError: ');
+      return Future.error(e);
+    }
+  }
 }

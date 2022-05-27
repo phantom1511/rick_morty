@@ -37,7 +37,9 @@ class _FilterState extends State<Filter> {
                   TextFormField(
                     controller: filterTEC,
                   ),
-                  TextButton(onPressed: () {}, child: const Text('Confirm'))
+                  TextButton(onPressed: () {
+                    Navigator.of(context).pop();
+                  }, child: const Text('Confirm'))
                 ],
               ),
             ),
