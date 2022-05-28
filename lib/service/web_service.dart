@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rick_morty/model/heroes.dart';
 import 'package:rick_morty/utils/debugging_util.dart';
@@ -21,10 +20,11 @@ class WebService {
     _dio = dio;
   }
 
-  Future<List<Hero>> getHeroes() async {
+  Future<List<Hero>> getHeroes(
+      {int page = 1, int count = 20, String? gender}) async {
     try {
-      final response =
-          await _dio.get('https://rickandmortyapi.com/api/character');
+      final response = await _dio.get(
+          'https://rickandmortyapi.com/api/character/?page=$page${gender == null ? '' : '&gender=$gender'}');
       dPrint(response, 'getHero: ');
 
       return heroFromJson(response.data['results']);
@@ -34,13 +34,13 @@ class WebService {
     }
   }
 
-  Future<List<Episode>> getEpisode() async {
+  Future<Episode> getEpisode() async {
     try {
       final response =
           await _dio.get('https://rickandmortyapi.com/api/episode');
       dPrint(response, 'getEpisode: ');
 
-      return episodeFromJson(response.data['results']);
+      return Episode.fromJson(response.data);
     } on DioError catch (e) {
       dPrint(e.message, 'getEpisodeError: ');
       return Future.error(e);

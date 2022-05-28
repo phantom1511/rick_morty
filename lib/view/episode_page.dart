@@ -1,15 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart' hide Hero;
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rick_morty/model/episode.dart';
-import 'package:rick_morty/model/heroes.dart';
 import 'package:rick_morty/service/web_service.dart';
 import 'package:rick_morty/utils/debugging_util.dart';
-import 'package:rick_morty/utils/filter.dart';
-import 'package:rick_morty/view/hero_details_page.dart';
-
-import '../utils/assets.dart';
 
 class EpisodePage extends StatefulWidget {
   const EpisodePage({Key? key}) : super(key: key);
@@ -25,7 +17,7 @@ class _EpisodePageState extends State<EpisodePage> {
         appBar: AppBar(
           title: const Text('Episode'),
         ),
-        body: FutureBuilder<List<Episode>>(
+        body: FutureBuilder<Episode>(
             future: WebService().getEpisode(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -38,7 +30,7 @@ class _EpisodePageState extends State<EpisodePage> {
                 dPrint(snapshot.error.toString(), 'Episode');
                 return ListView.separated(
                     itemBuilder: (_, index) {
-                      final item = snapshot.requireData[index].results[index];
+                      final item = snapshot.data!.results[index];
                       return GestureDetector(
                         onTap: () {},
                         child: Container(
@@ -46,11 +38,8 @@ class _EpisodePageState extends State<EpisodePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.network(
-                                item.name,
-                                width: 64,
-                                height: 64,
-                              )
+                              Text(item.name),
+                              Text(item.characters.first),
                             ],
                           ),
                         ),
@@ -58,7 +47,7 @@ class _EpisodePageState extends State<EpisodePage> {
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const SizedBox(height: 8),
-                    itemCount: snapshot.data?.length ?? 0);
+                    itemCount: snapshot.data?.results.length ?? 0);
               }
               return snapshot.hasError != true
                   ? const Center(child: CircularProgressIndicator.adaptive())

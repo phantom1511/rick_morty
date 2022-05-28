@@ -1,5 +1,4 @@
 // 🎯 Dart imports:
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
-  final filterTEC = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -26,20 +23,31 @@ class _FilterState extends State<Filter> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Container(
-              padding:
-                  const EdgeInsets.only(bottom: 24, top: 16, right: 16, left: 16),
+              padding: const EdgeInsets.only(
+                  bottom: 24, top: 16, right: 16, left: 16),
               width: double.maxFinite,
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(16)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextFormField(
-                    controller: filterTEC,
+                  Text(
+                    'Gender',
+                    style: Theme.of(context).textTheme.headline2,
                   ),
-                  TextButton(onPressed: () {
-                    Navigator.of(context).pop();
-                  }, child: const Text('Confirm'))
+                  ...['male', 'female', 'unknown', 'genderless']
+                      .map((e) => GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop(e);
+                            },
+                            child: Chip(label: Text(e)),
+                          ))
+                      .toList(),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Confirm'))
                 ],
               ),
             ),
