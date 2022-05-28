@@ -16,6 +16,7 @@ class HeroItem extends StatelessWidget {
     dPrint(hero.toJson(), 'Hero in details: ');
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Hero detail'),
       ),
       body: DetailsCard(

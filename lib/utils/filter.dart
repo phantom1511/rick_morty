@@ -13,6 +13,8 @@ class Filter extends StatefulWidget {
 }
 
 class _FilterState extends State<Filter> {
+  List genderList = ['male', 'female', 'unknown', 'genderless'];
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -31,23 +33,27 @@ class _FilterState extends State<Filter> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Gender',
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  ...['male', 'female', 'unknown', 'genderless']
+                  const Text('Gender',
+                      style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 32,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.bold)),
+                  ...genderList
                       .map((e) => GestureDetector(
                             onTap: () {
                               Navigator.of(context).pop(e);
                             },
-                            child: Chip(label: Text(e)),
+                            child: Chip(
+                              label: Text(e),
+                              labelStyle: const TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 12,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ))
                       .toList(),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Confirm'))
                 ],
               ),
             ),

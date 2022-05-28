@@ -15,6 +15,7 @@ class _EpisodePageState extends State<EpisodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('Episode'),
         ),
         body: FutureBuilder<Episode>(
@@ -31,17 +32,18 @@ class _EpisodePageState extends State<EpisodePage> {
                 return ListView.separated(
                     itemBuilder: (_, index) {
                       final item = snapshot.data!.results[index];
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(item.name),
-                              Text(item.characters.first),
-                            ],
-                          ),
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(item.name),
+                            Text('${item.characters}'),
+                            Text(item.episode),
+                            Text(item.airDate),
+                            Text('${item.created}'),
+                            Text('${item.created}'),
+                          ],
                         ),
                       );
                     },

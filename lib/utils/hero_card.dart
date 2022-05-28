@@ -39,7 +39,7 @@ class _HeroCardState extends State<HeroCard> {
                 ],
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.lightBlue)),
+                border: Border.all(color: Colors.blue.shade50)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -57,22 +57,24 @@ class _HeroCardState extends State<HeroCard> {
                             width: 86,
                           ),
                     const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-                        Text('${widget.name}',
-                            style: const TextStyle(
-                                color: Colors.blueGrey,
-                                fontSize: 18,
-                                overflow: TextOverflow.ellipsis)),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${widget.gender}',
-                          style: const TextStyle(color: Colors.black45),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 16),
+                          Text('${widget.name}',
+                              style: const TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 18,
+                                  overflow: TextOverflow.ellipsis)),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${widget.gender}',
+                            style: const TextStyle(color: Colors.black45),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
                     )
                   ],
                 ),

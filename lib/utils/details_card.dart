@@ -27,35 +27,103 @@ class DetailsCard extends StatefulWidget {
 class _DetailsCardState extends State<DetailsCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Center(
+    return Container(
+      margin: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.blue.shade50),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(75, 181, 241, 0.15),
+            offset: Offset(0, 5),
+            blurRadius: 8.0,
+          )
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             widget.image != null
-                ? Image.network(
-                    '${widget.image}',
-                    width: 312,
-                    height: 312,
+                ? Center(
+                    child: Image.network(
+                      '${widget.image}',
+                      width: 312,
+                      height: 300,
+                    ),
                   )
-                : SvgPicture.asset(
-                    Assets.avatar_m,
-                    width: 312,
-                    height: 312,
+                : Center(
+                    child: SvgPicture.asset(
+                      Assets.avatar_m,
+                      width: 312,
+                      height: 300,
+                    ),
                   ),
             const SizedBox(height: 8),
             const Divider(),
             const SizedBox(height: 8),
-            Text('${widget.name}'),
+            const Text(
+              'Name',
+              style: TextStyle(color: Colors.black45, fontSize: 10),
+            ),
+            Text(
+              '${widget.name}',
+              style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis),
+            ),
             const SizedBox(height: 8),
-            Text('${widget.status}'),
+            const Text(
+              'Gender',
+              style: TextStyle(color: Colors.black45, fontSize: 10),
+            ),
+            Text(
+              '${widget.gender}',
+              style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis),
+            ),
             const SizedBox(height: 8),
-            Text('${widget.type}'),
+            const Text(
+              'Status',
+              style: TextStyle(color: Colors.black45, fontSize: 10),
+            ),
+            Text(
+              '${widget.status}',
+              style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis),
+            ),
             const SizedBox(height: 8),
-            Text('${widget.location}'),
+            const Text(
+              'Type',
+              style: TextStyle(color: Colors.black45, fontSize: 10),
+            ),
+            Text(
+              '${widget.type}',
+              style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis),
+            ),
             const SizedBox(height: 8),
-            Text('${widget.gender}'),
+            const Text(
+              'Location',
+              style: TextStyle(color: Colors.black45, fontSize: 10),
+            ),
+            Text(
+              '${widget.location}',
+              style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis),
+            ),
           ],
         ),
       ),

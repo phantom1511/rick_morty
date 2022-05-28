@@ -70,7 +70,6 @@ class _HeroPageState extends State<HeroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black12,
         appBar: AppBar(
           title: const Text('Hero'),
           centerTitle: true,
